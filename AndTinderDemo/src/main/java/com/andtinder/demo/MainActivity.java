@@ -98,7 +98,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
         });
 
         cardModel.setOnCardDismissedListener(new CardModel.OnCardDismissedListener() {
-            @Override
+			@Override
+			public void onDismiss() {
+				Log.i("Swipeable Cards", "dismiss cards");
+			}
+
+			@Override
             public void onLike() {
                 Log.i("Swipeable Cards","I like the card");
             }

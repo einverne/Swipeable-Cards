@@ -22,19 +22,25 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 import com.andtinder.model.CardModel;
+import com.andtinder.model.Orientations;
 import com.andtinder.view.CardContainer;
 import com.andtinder.view.SimpleCardStackAdapter;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener{
 
     /**
      * This variable is the container that will host our cards
      */
 	private CardContainer mCardContainer;
-	
+    private Button btnDislike;
+    private Button btnLike;
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,6 +48,12 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.mainlayout);
 
 		mCardContainer = (CardContainer) findViewById(R.id.layoutview);
+        btnDislike = (Button) findViewById(R.id.btn_dislike);
+        btnLike = (Button) findViewById(R.id.btn_like);
+        btnDislike.setOnClickListener(this);
+        btnLike.setOnClickListener(this);
+
+        mCardContainer.setOrientation(Orientations.Orientation.Ordered);
 
 		Resources r = getResources();
 
@@ -101,4 +113,22 @@ public class MainActivity extends Activity {
 
 		mCardContainer.setAdapter(adapter);
 	}
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.btn_dislike:
+
+                mCardContainer.dislike();
+
+                break;
+            case R.id.btn_like:
+
+                mCardContainer.like();
+
+                break;
+
+        }
+    }
 }

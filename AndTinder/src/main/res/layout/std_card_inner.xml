@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/global_container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/global_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/title"
         style="@android:style/TextAppearance.Large.Inverse"
-        android:textColor="@android:color/primary_text_light"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-condensed"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/card_bg"
-        tools:text="Title"
-        android:padding="10dp"/>
+        android:fontFamily="sans-serif-condensed"
+        android:padding="10dp"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:text="Title" />
 
     <View
         android:id="@+id/divider_title"
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@id/title"
-        android:background="@color/card_outline"
-        />
+        android:background="@color/card_outline" />
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/divider_title"
         android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@id/divider_title"
         android:scaleType="centerCrop"
-        tools:src="@drawable/picture1"/>
+        tools:src="@drawable/picture1" />
 
     <View
         android:id="@+id/divider_bottom"
@@ -48,8 +46,7 @@
         android:layout_height="10dp"
         android:layout_alignBottom="@+id/image_1"
         android:layout_below="@+id/divider_bottom"
-        android:background="@color/card_bg"
-        />
+        android:background="@color/card_bg" />
 
     <TextView
         android:id="@+id/description"
@@ -60,13 +57,13 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/image"
         android:layout_toLeftOf="@+id/btn_sep_1"
-        android:gravity="center_vertical"
-        android:fontFamily="sans-serif-condensed"
         android:ellipsize="end"
-        android:padding="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center_vertical"
         android:lines="1"
+        android:padding="10dp"
         android:textColor="@android:color/secondary_text_light"
-        tools:text="This is the description, it is a long description, as you can see"/>
+        tools:text="This is the description, it is a long description, as you can see" />
 
     <View
         android:id="@+id/btn_sep_1"
@@ -76,7 +73,7 @@
         android:layout_below="@id/image"
         android:layout_marginTop="7dp"
         android:layout_toLeftOf="@+id/image_1"
-        android:background="#ccc"/>
+        android:background="#ccc" />
 
     <ImageButton
         android:id="@+id/image_1"
@@ -86,7 +83,7 @@
         android:layout_toLeftOf="@+id/btn_sep_2"
         android:background="?android:attr/selectableItemBackground"
         android:padding="10dp"
-        android:src="@drawable/camera"/>
+        android:src="@drawable/camera" />
 
     <View
         android:id="@+id/btn_sep_2"
@@ -96,7 +93,7 @@
         android:layout_below="@id/image"
         android:layout_marginTop="7dp"
         android:layout_toLeftOf="@+id/image_2"
-        android:background="#ccc"/>
+        android:background="#ccc" />
 
     <ImageButton
         android:id="@+id/image_2"
@@ -106,6 +103,6 @@
         android:layout_below="@id/image"
         android:background="?android:attr/selectableItemBackground"
         android:padding="10dp"
-        android:src="@drawable/people"/>
+        android:src="@drawable/people" />
 
 </RelativeLayout>

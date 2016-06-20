@@ -34,7 +34,7 @@ import java.util.Random;
 public class CardContainer extends AdapterView<ListAdapter> {
     public static final int INVALID_POINTER_ID = -1;
     private int mActivePointerId = INVALID_POINTER_ID;
-    private static final double DISORDERED_MAX_ROTATION_RADIANS = Math.PI / 64;
+    private static final double DISORDERED_MAX_ROTATION_RADIANS = Math.PI / 1000;
     private int mNumberOfCards = -1;
     private final DataSetObserver mDataSetObserver = new DataSetObserver() {
         @Override
@@ -64,7 +64,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
     private ListAdapter mListAdapter;
     private float mLastTouchX;
     private float mLastTouchY;
-    private View mTopCard;
+    private View mTopCard;          // first card on cards stack
     private int mTouchSlop;
     private int mGravity;
     private int mNextAdapterPosition;
@@ -76,7 +76,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
         super(context);
 
         setOrientation(Orientation.Disordered);
-        setGravity(Gravity.CENTER);
+        setGravity(Gravity.TOP);
         init();
 
     }
@@ -105,7 +105,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
         TypedArray a = getContext().obtainStyledAttributes(attr,
                 R.styleable.CardContainer);
 
-        setGravity(a.getInteger(R.styleable.CardContainer_android_gravity, Gravity.CENTER));
+        setGravity(a.getInteger(R.styleable.CardContainer_android_gravity, Gravity.TOP));
         int orientation = a.getInteger(R.styleable.CardContainer_orientation, 1);
         setOrientation(Orientation.fromIndex(orientation));
 
@@ -164,6 +164,10 @@ public class CardContainer extends AdapterView<ListAdapter> {
         return mOrientation;
     }
 
+    /**
+     * Set Card ordered or not
+     * @param orientation orientation
+     */
     public void setOrientation(Orientation orientation) {
         if (orientation == null)
             throw new NullPointerException("Orientation may not be null");
@@ -210,13 +214,14 @@ public class CardContainer extends AdapterView<ListAdapter> {
             childWidth = (int) ((R1 * Math.cos(DISORDERED_MAX_ROTATION_RADIANS) - R2 * Math.sin(DISORDERED_MAX_ROTATION_RADIANS)) / Math.cos(2 * DISORDERED_MAX_ROTATION_RADIANS));
             childHeight = (int) ((R2 * Math.cos(DISORDERED_MAX_ROTATION_RADIANS) - R1 * Math.sin(DISORDERED_MAX_ROTATION_RADIANS)) / Math.cos(2 * DISORDERED_MAX_ROTATION_RADIANS));
         } else {
+            // cards ordered
             childWidth = requestedWidth;
             childHeight = requestedHeight;
         }
 
         int childWidthMeasureSpec, childHeightMeasureSpec;
-        childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.AT_MOST);
-        childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.AT_MOST);
+        childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.AT_MOST) - 120;
+        childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.AT_MOST) - 120;
 
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
@@ -295,9 +300,9 @@ public class CardContainer extends AdapterView<ListAdapter> {
                 }
 
                 mTopCard.setTranslationX(mTopCard.getTranslationX() + dx);
-                mTopCard.setTranslationY(mTopCard.getTranslationY() + dy);
+//                mTopCard.setTranslationY(mTopCard.getTranslationY() + dy);
 
-                mTopCard.setRotation(40 * mTopCard.getTranslationX() / (getWidth() / 2.f));
+                mTopCard.setRotation(5 * mTopCard.getTranslationX() / (getWidth() / 2.f));
 
                 mLastTouchX = x;
                 mLastTouchY = y;
@@ -440,6 +445,18 @@ public class CardContainer extends AdapterView<ListAdapter> {
                 return true;
             } else
                 return false;
+        }
+    }
+
+    public void dislike() {
+        if (getChildCount() > 0) {
+            leave(-1000, 45);
+        }
+    }
+
+    public void like() {
+        if (getChildCount() > 0) {
+            leave(1000, 45);
         }
     }
 

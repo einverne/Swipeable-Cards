@@ -21,17 +21,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
 import com.andtinder.model.CardModel;
 import com.andtinder.model.Orientations;
+import com.andtinder.model.TextCardModel;
 import com.andtinder.view.CardContainer;
 import com.andtinder.view.SimpleCardStackAdapter;
 
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     /**
      * This variable is the container that will host our cards
@@ -44,7 +49,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mainlayout);
 
 		mCardContainer = (CardContainer) findViewById(R.id.layoutview);
@@ -63,29 +68,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
 		adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
 		adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
-		adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-		adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-		adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-		adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-		adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
-		adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
-		adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-		adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-		adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-		adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-		adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
-		adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
-		adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-		adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-		adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-		adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-		adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
-		adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
-		adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-		adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-		adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-		adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-		adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
 
         CardModel cardModel = new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1));
         cardModel.setOnClickListener(new CardModel.OnClickListener() {
@@ -112,10 +94,37 @@ public class MainActivity extends Activity implements View.OnClickListener{
             }
         });
 
+        cardModel.setOnSwipeListener(new CardModel.OnSwipeListener() {
+            @Override
+            public void onSwipe(float dx) {
+                Log.i("Swipe ", "dx : " + dx);
+            }
+        });
+
         adapter.add(cardModel);
 
 		mCardContainer.setAdapter(adapter);
 	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_text_card:
+                Intent intent = new Intent(this, TextCardActivity.class);
+                startActivity(intent);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public void onClick(View v) {

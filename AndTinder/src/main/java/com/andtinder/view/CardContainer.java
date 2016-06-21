@@ -64,6 +64,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
     private ListAdapter mListAdapter;
     private float mLastTouchX;
     private float mLastTouchY;
+    private float mFirstTouchX;     // recode the x when touched
     private View mTopCard;          // first card on cards stack
     private int mTouchSlop;
     private int mGravity;
@@ -255,7 +256,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
         if (mGestureDetector.onTouchEvent(event)) {
             return true;
         }
-        Log.d("Touch Event", MotionEvent.actionToString(event.getActionMasked()) + " ");
+//        Log.d("Touch Event", MotionEvent.actionToString(event.getActionMasked()) + " ");
         final int pointerIndex;
         final float x, y;
         final float dx, dy;
@@ -298,6 +299,13 @@ public class CardContainer extends AdapterView<ListAdapter> {
                 if(!mDragging) {
                     return true;
                 }
+                float deltaX = event.getX() - mFirstTouchX;
+
+                CardModel cardModel = (CardModel)getAdapter().getItem(0);
+                if (cardModel.getOnSwipeListener() != null) {
+                    cardModel.getOnSwipeListener().onSwipe(deltaX);
+                }
+
 
                 mTopCard.setTranslationX(mTopCard.getTranslationX() + dx);
 //                mTopCard.setTranslationY(mTopCard.getTranslationY() + dy);
@@ -341,6 +349,11 @@ public class CardContainer extends AdapterView<ListAdapter> {
         return true;
     }
 
+    /**
+     * 事件拦截
+     * @param event event
+     * @return
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         if (mTopCard == null) {
@@ -352,11 +365,12 @@ public class CardContainer extends AdapterView<ListAdapter> {
         final int pointerIndex;
         final float x, y;
         final float dx, dy;
+        CardModel cardModel;
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 mTopCard.getHitRect(childRect);
 
-                CardModel cardModel = (CardModel)getAdapter().getItem(0);
+                cardModel = (CardModel)getAdapter().getItem(0);
 
                 if (cardModel.getOnClickListener() != null) {
                     cardModel.getOnClickListener().OnClickListener();
@@ -369,6 +383,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
                     return false;
                 }
 
+                mFirstTouchX = x;
                 mLastTouchX = x;
                 mLastTouchY = y;
                 mActivePointerId = event.getPointerId(pointerIndex);
@@ -515,8 +530,8 @@ public class CardContainer extends AdapterView<ListAdapter> {
                     .alpha(.75f)
                     .setInterpolator(new LinearInterpolator())
                     .x(targetX)
-                    .y(targetY)
-                    .rotation(Math.copySign(45, velocityX))
+//                    .y(targetY)
+                    .rotation(Math.copySign(20, velocityX))
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {

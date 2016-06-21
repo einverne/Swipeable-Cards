@@ -356,7 +356,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
             case MotionEvent.ACTION_DOWN:
                 mTopCard.getHitRect(childRect);
 
-                CardModel cardModel = (CardModel)getAdapter().getItem(getChildCount()-1);
+                CardModel cardModel = (CardModel)getAdapter().getItem(0);
 
                 if (cardModel.getOnClickListener() != null) {
                     cardModel.getOnClickListener().OnClickListener();

@@ -79,6 +79,8 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
     private OnSwipeListener mOnSwipeListener = null;
 
+    private OnCardStackEmptyListener mOnCardStackEmptyListener = null;
+
     public interface OnCardDismissedListener {
         void onDismiss();
         void onLike();
@@ -96,6 +98,9 @@ public class CardContainer extends AdapterView<ListAdapter> {
         void onSwipe(float dx);
     }
 
+    public interface OnCardStackEmptyListener {
+        void onEmpty();
+    }
 
     public CardContainer(Context context) {
         super(context);
@@ -167,7 +172,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
         while (mNextAdapterPosition < mListAdapter.getCount() && getChildCount() < mMaxVisible) {
             View view = mListAdapter.getView(mNextAdapterPosition, null, this);
             view.setLayerType(LAYER_TYPE_SOFTWARE, null);
-            if(mOrientation == Orientation.Disordered) {
+            if (mOrientation == Orientation.Disordered) {
                 view.setRotation(getDisorderedRotation());
             }
             addViewInLayout(view, 0, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
@@ -191,20 +196,20 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
     /**
      * Set Card ordered or not
+     *
      * @param orientation orientation
      */
     public void setOrientation(Orientation orientation) {
         if (orientation == null)
             throw new NullPointerException("Orientation may not be null");
-        if(mOrientation != orientation) {
+        if (mOrientation != orientation) {
             this.mOrientation = orientation;
-            if(orientation == Orientation.Disordered) {
+            if (orientation == Orientation.Disordered) {
                 for (int i = 0; i < getChildCount(); i++) {
                     View child = getChildAt(i);
                     child.setRotation(getDisorderedRotation());
                 }
-            }
-            else {
+            } else {
                 for (int i = 0; i < getChildCount(); i++) {
                     View child = getChildAt(i);
                     child.setRotation(0);
@@ -217,6 +222,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
     /**
      * 不排序下,获取旋转值
+     *
      * @return 旋转角度
      */
     private float getDisorderedRotation() {
@@ -273,13 +279,14 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
             Gravity.apply(mGravity, w, h, boundsRect, childRect);
             view.layout(childRect.left, childRect.top, childRect.right, childRect.bottom);
-            
+
         }
     }
 
     /**
      * 触摸事件处理, 默认返回true, 触摸屏幕时先调用 ACTION_DOWN, 返回 true 时,继续调用 ACTION_UP, 否则 false
      * 只会调用 ACTION_DOWN 而不调用 ACTION_UP
+     *
      * @param event
      * @return
      */
@@ -331,7 +338,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
                     mDragging = true;
                 }
 
-                if(!mDragging) {
+                if (!mDragging) {
                     return true;
                 }
                 float deltaX = event.getX() - mFirstTouchX;
@@ -385,6 +392,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
     /**
      * 事件拦截, 默认返回值 false, 传递给子View
+     *
      * @param event event
      * @return
      */
@@ -559,6 +567,13 @@ public class CardContainer extends AdapterView<ListAdapter> {
                 }
             }
 
+            // Check if card stack is empty and trigger event.
+            if (getOnCardStackEmptyListener() != null) {
+                if (getChildCount() - 1 == 0) {
+                    getOnCardStackEmptyListener().onEmpty();
+                }
+            }
+
             topCard.animate()
                     .setDuration(duration)
                     .alpha(.75f)
@@ -603,5 +618,13 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
     public void setOnCardDismissedListener(OnCardDismissedListener mOnCardDismissedListener) {
         this.mOnCardDismissedListener = mOnCardDismissedListener;
+    }
+
+    public OnCardStackEmptyListener getOnCardStackEmptyListener() {
+        return mOnCardStackEmptyListener;
+    }
+
+    public void setOnCardStackEmptyListener(OnCardStackEmptyListener mOnCardStackEmptyListener) {
+        this.mOnCardStackEmptyListener = mOnCardStackEmptyListener;
     }
 }

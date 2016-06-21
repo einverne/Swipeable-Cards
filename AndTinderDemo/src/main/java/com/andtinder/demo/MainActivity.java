@@ -101,6 +101,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        mCardContainer.setOnCardStackEmptyListener(new CardContainer.OnCardStackEmptyListener() {
+            @Override
+            public void onEmpty() {
+                Log.i("Swipe ", "empty");
+            }
+        });
+
         adapter.add(cardModel);
 
 		mCardContainer.setAdapter(adapter);

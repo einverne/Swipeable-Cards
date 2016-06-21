@@ -57,7 +57,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
 
     //TODO: determine max dynamically based on device speed
-    private int mMaxVisible = 10;
+    private int mMaxVisible = 3;            // 最大显示Card数
     private GestureDetector mGestureDetector;
     private int mFlingSlop;
     private Orientation mOrientation;
@@ -120,9 +120,9 @@ public class CardContainer extends AdapterView<ListAdapter> {
     }
 
     private void init() {
-        ViewConfiguration viewConfiguration = ViewConfiguration.get(getContext());
-        mFlingSlop = viewConfiguration.getScaledMinimumFlingVelocity();
-        mTouchSlop = viewConfiguration.getScaledTouchSlop();
+        ViewConfiguration viewConfiguration = ViewConfiguration.get(getContext());  // get system constants
+        mFlingSlop = viewConfiguration.getScaledMinimumFlingVelocity();        // get min fling velocity
+        mTouchSlop = viewConfiguration.getScaledTouchSlop();        // distance in pixels a touch
         mGestureDetector = new GestureDetector(getContext(), new GestureListener());
     }
 
@@ -156,7 +156,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
         ensureFull();
 
         if (getChildCount() != 0) {
-            mTopCard = getChildAt(getChildCount() - 1);
+            mTopCard = getChildAt(getChildCount() - 1);         // first Card
             mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null);
         }
         mNumberOfCards = getAdapter().getCount();
@@ -215,6 +215,10 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
     }
 
+    /**
+     * 不排序下,获取旋转值
+     * @return 旋转角度
+     */
     private float getDisorderedRotation() {
         return (float) Math.toDegrees(mRandom.nextGaussian() * DISORDERED_MAX_ROTATION_RADIANS);
     }
@@ -269,9 +273,16 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
             Gravity.apply(mGravity, w, h, boundsRect, childRect);
             view.layout(childRect.left, childRect.top, childRect.right, childRect.bottom);
+            
         }
     }
 
+    /**
+     * 触摸事件处理, 默认返回true, 触摸屏幕时先调用 ACTION_DOWN, 返回 true 时,继续调用 ACTION_UP, 否则 false
+     * 只会调用 ACTION_DOWN 而不调用 ACTION_UP
+     * @param event
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mTopCard == null) {
@@ -293,7 +304,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
                 y = event.getY(pointerIndex);
 
                 if (!childRect.contains((int) x, (int) y)) {
-                    return false;
+                    return false;       // 如果不在范围内则不处理
                 }
                 mLastTouchX = x;
                 mLastTouchY = y;
@@ -373,7 +384,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
     }
 
     /**
-     * 事件拦截
+     * 事件拦截, 默认返回值 false, 传递给子View
      * @param event event
      * @return
      */
@@ -383,7 +394,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
             return false;
         }
         if (mGestureDetector.onTouchEvent(event)) {
-            return true;
+            return true;        // detect a gesture, 拦截, 不处理TouchEvent
         }
         final int pointerIndex;
         final float x, y;
@@ -464,7 +475,10 @@ public class CardContainer extends AdapterView<ListAdapter> {
             this.viewType = viewType;
         }
     }
-    
+
+    /**
+     * 手势判断
+     */
     private class GestureListener extends SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {

@@ -86,7 +86,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
     }
 
     public interface OnClickListener {
-        void OnClickListener();
+        void OnClick();
     }
 
     /**
@@ -325,7 +325,6 @@ public class CardContainer extends AdapterView<ListAdapter> {
                 }
                 float deltaX = event.getX() - mFirstTouchX;
 
-                CardModel cardModel = (CardModel)getAdapter().getItem(0);
                 if (getOnSwipeListener() != null) {
                     getOnSwipeListener().onSwipe(deltaX);
                 }
@@ -389,15 +388,12 @@ public class CardContainer extends AdapterView<ListAdapter> {
         final int pointerIndex;
         final float x, y;
         final float dx, dy;
-        CardModel cardModel;
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 mTopCard.getHitRect(childRect);
 
-                cardModel = (CardModel)getAdapter().getItem(0);
-
                 if (getOnClickListener() != null) {
-                    getOnClickListener().OnClickListener();
+                    getOnClickListener().OnClick();
                 }
                 pointerIndex = event.getActionIndex();
                 x = event.getX(pointerIndex);
@@ -468,7 +464,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
             this.viewType = viewType;
         }
     }
-
+    
     private class GestureListener extends SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {

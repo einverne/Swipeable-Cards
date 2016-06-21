@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CardModel cardModel = new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1));
         mCardContainer.setOnClickListener(new CardContainer.OnClickListener() {
            @Override
-           public void OnClickListener() {
+           public void OnClick() {
                Log.i("Swipeable Cards","I am pressing the card");
            }
         });

@@ -53,8 +53,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         btnDislike.setOnClickListener(this);
         btnLike.setOnClickListener(this);
 
-        mCardContainer.setOrientation(Orientations.Orientation.Ordered);
-
 		Resources r = getResources();
 
 		SimpleCardStackAdapter adapter = new SimpleCardStackAdapter(this);

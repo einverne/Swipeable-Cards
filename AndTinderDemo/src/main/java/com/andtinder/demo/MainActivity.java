@@ -70,14 +70,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
 
         CardModel cardModel = new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1));
-        cardModel.setOnClickListener(new CardModel.OnClickListener() {
+        mCardContainer.setOnClickListener(new CardContainer.OnClickListener() {
            @Override
            public void OnClickListener() {
                Log.i("Swipeable Cards","I am pressing the card");
            }
         });
 
-        cardModel.setOnCardDismissedListener(new CardModel.OnCardDismissedListener() {
+        mCardContainer.setOnCardDismissedListener(new CardContainer.OnCardDismissedListener() {
 			@Override
 			public void onDismiss() {
 				Log.i("Swipeable Cards", "dismiss cards");
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        cardModel.setOnSwipeListener(new CardModel.OnSwipeListener() {
+        mCardContainer.setOnSwipeListener(new CardContainer.OnSwipeListener() {
             @Override
             public void onSwipe(float dx) {
                 Log.i("Swipe ", "dx : " + dx);

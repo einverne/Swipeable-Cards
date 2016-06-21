@@ -73,6 +73,30 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
     private boolean locked = false;
 
+    private OnCardDismissedListener mOnCardDismissedListener = null;
+
+    private OnClickListener mOnClickListener = null;
+
+    private OnSwipeListener mOnSwipeListener = null;
+
+    public interface OnCardDismissedListener {
+        void onDismiss();
+        void onLike();
+        void onDislike();
+    }
+
+    public interface OnClickListener {
+        void OnClickListener();
+    }
+
+    /**
+     * return the delta x value of touch point
+     */
+    public interface OnSwipeListener {
+        void onSwipe(float dx);
+    }
+
+
     public CardContainer(Context context) {
         super(context);
 
@@ -302,8 +326,8 @@ public class CardContainer extends AdapterView<ListAdapter> {
                 float deltaX = event.getX() - mFirstTouchX;
 
                 CardModel cardModel = (CardModel)getAdapter().getItem(0);
-                if (cardModel.getOnSwipeListener() != null) {
-                    cardModel.getOnSwipeListener().onSwipe(deltaX);
+                if (getOnSwipeListener() != null) {
+                    getOnSwipeListener().onSwipe(deltaX);
                 }
 
 
@@ -372,8 +396,8 @@ public class CardContainer extends AdapterView<ListAdapter> {
 
                 cardModel = (CardModel)getAdapter().getItem(0);
 
-                if (cardModel.getOnClickListener() != null) {
-                    cardModel.getOnClickListener().OnClickListener();
+                if (getOnClickListener() != null) {
+                    getOnClickListener().OnClickListener();
                 }
                 pointerIndex = event.getActionIndex();
                 x = event.getX(pointerIndex);
@@ -516,12 +540,12 @@ public class CardContainer extends AdapterView<ListAdapter> {
             if (mTopCard != null)
                 mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null);
 
-            if (cardModel.getOnCardDismissedListener() != null) {
-                cardModel.getOnCardDismissedListener().onDismiss();
+            if (getOnCardDismissedListener() != null) {
+                getOnCardDismissedListener().onDismiss();
                 if (targetX < 0) {
-                    cardModel.getOnCardDismissedListener().onDislike();
+                    getOnCardDismissedListener().onDislike();
                 } else {
-                    cardModel.getOnCardDismissedListener().onLike();
+                    getOnCardDismissedListener().onLike();
                 }
             }
 
@@ -545,5 +569,29 @@ public class CardContainer extends AdapterView<ListAdapter> {
                         }
                     });
         }
+    }
+
+    public OnSwipeListener getOnSwipeListener() {
+        return mOnSwipeListener;
+    }
+
+    public void setOnSwipeListener(OnSwipeListener mOnSwipeListener) {
+        this.mOnSwipeListener = mOnSwipeListener;
+    }
+
+    public OnClickListener getOnClickListener() {
+        return mOnClickListener;
+    }
+
+    public void setOnClickListener(OnClickListener mOnClickListener) {
+        this.mOnClickListener = mOnClickListener;
+    }
+
+    public OnCardDismissedListener getOnCardDismissedListener() {
+        return mOnCardDismissedListener;
+    }
+
+    public void setOnCardDismissedListener(OnCardDismissedListener mOnCardDismissedListener) {
+        this.mOnCardDismissedListener = mOnCardDismissedListener;
     }
 }

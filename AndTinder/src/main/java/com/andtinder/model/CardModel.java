@@ -30,25 +30,6 @@ public class CardModel {
 	private Drawable cardLikeImageDrawable;
 	private Drawable cardDislikeImageDrawable;
 
-    private OnCardDismissedListener mOnCardDismissedListener = null;
-
-    private OnClickListener mOnClickListener = null;
-
-	private OnSwipeListener mOnSwipeListener = null;
-
-    public interface OnCardDismissedListener {
-		void onDismiss();
-        void onLike();
-        void onDislike();
-    }
-
-    public interface OnClickListener {
-        void OnClickListener();
-    }
-
-	public interface OnSwipeListener {
-		void onSwipe(float dx);
-	}
 
 	public CardModel() {
 		this(null, null, (Drawable)null);
@@ -106,27 +87,4 @@ public class CardModel {
 		this.cardDislikeImageDrawable = cardDislikeImageDrawable;
 	}
 
-    public void setOnCardDismissedListener( OnCardDismissedListener listener ) {
-        this.mOnCardDismissedListener = listener;
-    }
-
-    public OnCardDismissedListener getOnCardDismissedListener() {
-       return this.mOnCardDismissedListener;
-    }
-
-    public void setOnClickListener( OnClickListener listener ) {
-        this.mOnClickListener = listener;
-    }
-
-    public OnClickListener getOnClickListener() {
-        return this.mOnClickListener;
-    }
-
-	public OnSwipeListener getOnSwipeListener() {
-		return mOnSwipeListener;
-	}
-
-	public void setOnSwipeListener(OnSwipeListener mOnSwipeListener) {
-		this.mOnSwipeListener = mOnSwipeListener;
-	}
 }
